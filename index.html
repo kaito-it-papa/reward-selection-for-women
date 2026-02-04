@@ -1,36 +1,143 @@
-<link rel="icon" href="favicon.png">
-<meta property="og:title" content="大人女子の、ご褒美セレクション">
-<meta property="og:image" content="ogp-reward.png">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>大人女子の、ご褒美セレクション</title>
+  
+  <link rel="icon" href="favicon.png">
+  <meta property="og:title" content="大人女子の、ご褒美セレクション">
+  <meta property="og:description" content="AIがあなたにぴったりのご褒美をセレクト。">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    :root { --main-color: #f7a8b8; --accent-color: #d4a373; --text-color: #4a4242; --bg-color: #fff9f9; --card-shadow: 0 10px 30px rgba(247, 168, 184, 0.15); }
+    body { background-color: var(--bg-color); padding: 15px; font-family: 'Noto Sans JP', sans-serif; color: var(--text-color); }
+    .container { max-width: 500px; margin: auto; }
+    .card-main { border-radius: 35px; border: none; box-shadow: var(--card-shadow); background: #ffffff; padding: 35px 25px; margin-top: 15px; }
+    .header-icon-box { width: 80px; height: 80px; background: linear-gradient(135deg, #fff0f3, #ffe0e6); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--main-color); font-size: 2.2rem; }
+    .app-title { font-weight: 700; color: var(--text-color); margin-bottom: 8px; }
+    .app-subtitle { font-size: 0.85rem; color: #8d7e7e; margin-bottom: 35px; line-height: 1.6; }
+    .form-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; display: block; }
+    .form-select { border-radius: 15px; border: 2px solid #fff0f3; font-size: 0.95rem; padding: 12px; margin-bottom: 20px; }
+    .btn-diagnosis { background: linear-gradient(135deg, var(--main-color), var(--accent-color)); color: white; border: none; border-radius: 50px; font-weight: 700; padding: 18px; width: 100%; box-shadow: 0 8px 20px rgba(247, 168, 184, 0.4); transition: 0.3s; }
+    .analysis-box { background: #fff0f3; padding: 20px; border-radius: 20px; margin: 30px 0; border-left: 6px solid var(--main-color); font-size: 0.85rem; line-height: 1.7; }
+    .product-card { border-radius: 22px; border: 1px solid #fff0f3; margin-bottom: 25px; transition: 0.3s; background: white; overflow: hidden; display: flex; flex-direction: column; }
+    .img-wrapper { width: 100%; height: 220px; background-color: #fdfdfd; display: flex; align-items: center; justify-content: center; padding: 10px; }
+    .product-img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; }
+    .product-content { padding: 20px; }
+    .ai-badge { background: #ffb7c5; color: white; font-size: 0.65rem; padding: 4px 14px; border-radius: 20px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+    .price-tag { color: var(--main-color); font-weight: bold; font-size: 1.1rem; }
+    .btn-detail { background-color: var(--main-color); color: white; border-radius: 25px; font-size: 0.85rem; font-weight: bold; padding: 8px 25px; text-decoration: none; border: none; }
+    #loading { display: none; text-align: center; padding: 30px; }
+  </style>
+</head>
+<body>
+  <div class="container text-center">
+    <div class="card-main">
+      <div class="header-icon-box shadow-sm"><i class="fas fa-gift"></i></div>
+      <h4 class="app-title">大人女子の、ご褒美セレクション</h4>
+      <p class="app-subtitle">AIコンシェルジュがあなたに<br>お勧めしたい商品をピックアップしました</p>
 
-<script>
-  // ★重要：新しくデプロイしたGASのURLをここに貼る
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbxDaf3ladih274DwfUcgqQX-0-P-w0W_1zmREAicx-ILpyFqawerpEEgWdnTIH9Ghza/exec";
+      <form id="searchForm" class="text-start">
+        <div class="row g-3 mb-4">
+          <div class="col-6">
+            <label class="form-label"><i class="fas fa-user"></i> 性別</label>
+            <select class="form-select" id="gender"><option value="女性" selected>女性</option><option value="男性">男性</option></select>
+          </div>
+          <div class="col-6">
+            <label class="form-label"><i class="fas fa-calendar-heart"></i> 年代</label>
+            <select class="form-select" id="age"><option value="20代">20代</option><option value="30代">30代</option><option value="40代" selected>40代</option><option value="50代">50代</option></select>
+          </div>
+        </div>
+        <div class="mb-5">
+          <label class="form-label"><i class="fas fa-sparkles"></i> 性格タイプ</label>
+          <select class="form-select" id="mbti">
+            <option value="INTJ">INTJ (建築家)</option><option value="INFP">INFP (仲介者)</option><option value="ENFP">ENFP (運動家)</option><option value="ISFJ">ISFJ (擁護者)</option><option value="ESFP">ESFP (エンターテイナー)</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-diagnosis shadow-sm" onclick="submitForm()">診断を開始する</button>
+      </form>
 
-  async function submitForm() {
-    const loading = document.getElementById('loading');
-    const results = document.getElementById('results');
-    loading.classList.remove('d-none');
-    results.innerHTML = '';
+      <div id="loading">
+        <div class="spinner-border" style="color: var(--main-color);"></div>
+        <p class="mt-4 small fw-bold text-muted">全国からセレクトしています...</p>
+      </div>
 
-    const form = document.getElementById('searchForm');
-    const payload = {
-      gender: form.gender.value,
-      age: form.age.value,
-      mbti: form.mbti.value
-    };
+      <div id="results" class="mt-2 text-start"></div>
+    </div>
+  </div>
 
-    try {
-      const response = await fetch(GAS_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
-      const data = await response.json();
-      showResults(data);
-    } catch (err) {
-      loading.classList.add('d-none');
-      alert('エラーが発生しました: ' + err);
+  <script>
+    // ★重要：新しくデプロイしたGASのURL（末尾が/exec）をここに貼る
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxDaf3ladih274DwfUcgqQX-0-P-w0W_1zmREAicx-ILpyFqawerpEEgWdnTIH9Ghza/exec";
+
+    async function submitForm() {
+      const loading = document.getElementById('loading');
+      const results = document.getElementById('results');
+      
+      loading.style.display = 'block';
+      results.innerHTML = '';
+
+      const payload = {
+        gender: document.getElementById('gender').value,
+        age: document.getElementById('age').value,
+        mbti: document.getElementById('mbti').value
+      };
+
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        showResults(data);
+      } catch (err) {
+        loading.style.display = 'none';
+        alert('エラーが発生しました: ' + err);
+      }
     }
-  }
 
-  // showResults関数は既存のものをそのまま使用
-</script>
+    function showResults(data) {
+      document.getElementById('loading').style.display = 'none';
+      let resultsDiv = document.getElementById('results');
+      
+      if (data.error) {
+        resultsDiv.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+        return;
+      }
+
+      let html = '';
+      if (data.analysis) { 
+        html += `<div class="analysis-box"><strong>Concierge Message</strong><br>${data.analysis}</div>`; 
+      }
+      
+      const items = data.items || {};
+      for (let catName in items) {
+        html += `<h5 class="category-title text-center mt-5 mb-4">- ${catName} -</h5>`;
+        items[catName].forEach(item => {
+          html += `
+            <div class="product-card shadow-sm">
+              <div class="img-wrapper">
+                <img src="${item.image}" class="product-img">
+              </div>
+              <div class="product-content">
+                <div class="ai-badge">${item.aiComment}</div>
+                <h6 class="fw-bold mb-3">${item.name}</h6>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="price-tag">${item.price}</span>
+                  <a href="${item.url}" target="_blank" class="btn btn-detail">商品を見る</a>
+                </div>
+              </div>
+            </div>`;
+        });
+      }
+      resultsDiv.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
