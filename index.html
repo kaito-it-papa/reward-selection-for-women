@@ -113,23 +113,71 @@
     }
 
     function showResults(data) {
-      document.getElementById('loading').style.display = 'none';
-      let html = '';
-      if (data.analysis) html += `<div class="analysis-box"><strong>Message:</strong><br>${data.analysis}</div>`;
-      
-      for (let cat in data.items) {
-        html += `<h6 class="text-center my-4 fw-bold">- ${cat} -</h6>`;
-        data.items[cat].forEach(item => {
-          html += `<div class="product-card shadow-sm"><div class="img-wrapper"><img src="${item.image}" class="product-img"></div><div class="product-content"><div class="ai-badge">${item.aiComment}</div><h6 class="small fw-bold">${item.name}</h6><div class="d-flex justify-content-between align-items-center mt-3"><span class="price-tag">${item.price}</span><a href="${item.url}" target="_blank" class="btn-detail">詳細</a></div></div></div>`;
-        });
-      }
+  document.getElementById('loading').style.display = 'none';
+  let resultsDiv = document.getElementById('results');
+  
+  if (data.error) {
+    resultsDiv.innerHTML = `<div class="alert alert-danger mt-4 small">${data.error}</div>`;
+    return;
+  }
 
-      if (data.ultimateItem) {
-        html += `<div class="ultimate-section mt-5 p-4"><h5 class="text-center fw-bold mb-3" style="color:var(--gold)">👑 究極の選択</h5><div class="product-card ultimate-card"><div class="img-wrapper"><img src="${data.ultimateItem.image}" class="product-img"></div><div class="product-content"><p class="fst-italic small mb-3">"${data.ultimateItem.ultimateReason}"</p><h6 class="fw-bold">${data.ultimateItem.name}</h6><div class="d-flex justify-content-between align-items-center mt-3"><span class="price-tag">${data.ultimateItem.price}</span><a href="${data.ultimateItem.url}" target="_blank" class="btn-detail" style="background:var(--gold)">今すぐチェック</a></div></div></div></div>`;
-      }
-      document.getElementById('results').innerHTML = html;
-      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-    }
+  let html = '';
+  if (data.analysis) { 
+    html += `<div class="analysis-box"><strong>Concierge Message</strong><br>${data.analysis}</div>`; 
+  }
+  
+  const items = data.items || {};
+  for (let catName in items) {
+    html += `<h5 class="category-title text-center mt-5 mb-4">- ${catName} -</h5>`;
+    items[catName].forEach(item => {
+      // 送料無料と評価のHTMLを作成
+      let badges = '';
+      if (item.isFreeShipping) badges += `<span style="background:#fff0f3; color:#f06595; border:1px solid #f06595; font-size:0.6rem; padding:2px 6px; border-radius:4px; margin-right:5px; font-weight:bold;">送料無料</span>`;
+      if (item.reviewAverage) badges += `<span style="color:#d4a373; font-size:0.75rem; font-weight:bold;">⭐ ${item.reviewAverage}</span>`;
+
+      html += `
+        <div class="product-card shadow-sm">
+          <div class="img-wrapper"><img src="${item.image}" class="product-img"></div>
+          <div class="product-content">
+            <div class="ai-badge">${item.aiComment}</div>
+            <div class="mb-2">${badges}</div>
+            <h6 class="fw-bold mb-3" style="font-size: 0.85rem; line-height: 1.5;">${item.name}</h6>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="price-tag">${item.price}</span>
+              <a href="${item.url}" target="_blank" class="btn btn-detail">詳細</a>
+            </div>
+          </div>
+        </div>`;
+    });
+  }
+
+  // 究極の一品セクション
+  if (data.ultimateItem) {
+    let uItem = data.ultimateItem;
+    html += `
+      <div class="ultimate-section mt-5 p-4">
+        <h5 class="text-center fw-bold mb-3" style="color:var(--gold)">👑 究極の選択</h5>
+        <div class="product-card ultimate-card">
+          <div class="img-wrapper"><img src="${uItem.image}" class="product-img"></div>
+          <div class="product-content">
+            <div class="mb-2">
+              <span style="background:var(--gold); color:white; font-size:0.65rem; padding:3px 8px; border-radius:4px; margin-right:5px; font-weight:bold;">送料無料</span>
+              <span style="color:var(--gold); font-size:0.85rem; font-weight:bold;">⭐ ${uItem.reviewAverage}</span>
+            </div>
+            <p class="fst-italic small mb-3">"${uItem.ultimateReason}"</p>
+            <h6 class="fw-bold">${uItem.name}</h6>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <span class="price-tag">${uItem.price}</span>
+              <a href="${uItem.url}" target="_blank" class="btn btn-detail" style="background:var(--gold)">今すぐチェック</a>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+  
+  resultsDiv.innerHTML = html;
+  resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
   </script>
 </body>
 </html>
