@@ -1,0 +1,36 @@
+<link rel="icon" href="favicon.png">
+<meta property="og:title" content="大人女子の、ご褒美セレクション">
+<meta property="og:image" content="ogp-reward.png">
+
+<script>
+  // ★重要：新しくデプロイしたGASのURLをここに貼る
+  const GAS_URL = "https://script.google.com/macros/s/XXXXX/exec";
+
+  async function submitForm() {
+    const loading = document.getElementById('loading');
+    const results = document.getElementById('results');
+    loading.classList.remove('d-none');
+    results.innerHTML = '';
+
+    const form = document.getElementById('searchForm');
+    const payload = {
+      gender: form.gender.value,
+      age: form.age.value,
+      mbti: form.mbti.value
+    };
+
+    try {
+      const response = await fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      showResults(data);
+    } catch (err) {
+      loading.classList.add('d-none');
+      alert('エラーが発生しました: ' + err);
+    }
+  }
+
+  // showResults関数は既存のものをそのまま使用
+</script>
