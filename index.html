@@ -132,36 +132,41 @@
       }
     }
 
-    function showOracleResult(data) {
+function showOracleResult(data) {
       document.getElementById('loading').style.display = 'none';
       const resDiv = document.getElementById('results');
       
       if (data.error) {
-        resDiv.innerHTML = `<div class="alert alert-warning text-center p-4 animate__animated animate__fadeIn">${data.error}</div>`;
+        resDiv.innerHTML = `<div class="alert alert-warning text-center p-4">${data.error}</div>`;
         return;
       }
+
+      // データの存在確認（空白回避）
+      const analysisText = data.analysis || "心理鑑定の結果を読み取ることができませんでした。";
+      const verdictText = data.verdict || "選定理由を読み取ることができませんでした。";
+      const item = data.item || { name: "商品が見つかりませんでした", price: "-", image: "", url: "#" };
 
       resDiv.innerHTML = `
         <div class="oracle-box animate__animated animate__fadeInUp">
           <div class="analysis-card shadow-sm">
             <h6 class="fw-bold mb-3"><i class="fas fa-fingerprint me-2"></i>深層心理の鑑定結果</h6>
-            <p>${data.analysis}</p>
+            <p>${analysisText}</p>
           </div>
 
           <div class="premium-item-card shadow-lg">
             <div class="item-badge">THE BEST CHOICE</div>
             <div class="img-wrapper">
-              <img src="${data.item.image}">
+              <img src="${item.image}">
             </div>
             <div class="item-info">
-              <h5 class="serif fw-bold mb-4">${data.item.name}</h5>
-              <div class="verdict-box serif">"${data.verdict}"</div>
+              <h5 class="serif fw-bold mb-4">${item.name}</h5>
+              <div class="verdict-box serif">"${verdictText}"</div>
               <div class="d-flex justify-content-between align-items-center mt-5">
                 <div class="price-box">
-                  <div class="price-tag">${data.item.price}</div>
-                  <div class="small text-muted">⭐ ${data.item.reviewAverage}</div>
+                  <div class="price-tag">${item.price}</div>
+                  <div class="small text-muted">⭐ ${item.reviewAverage || '4.5'}</div>
                 </div>
-                <a href="${data.item.url}" target="_blank" class="btn-buy">詳細を見る</a>
+                <a href="${item.url}" target="_blank" class="btn-buy">詳細を見る</a>
               </div>
             </div>
           </div>
