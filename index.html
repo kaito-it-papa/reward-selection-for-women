@@ -4,73 +4,34 @@
   <base target="_top">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>大人女子の、ご褒美セレクション</title>
+  <title>ご褒美コンシェルジュ | 運命の一品</title>
   
-  <link rel="icon" href="favicon.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   
   <style>
-    :root {
-      --main-color: #f7a8b8;
-      --gold: #d4af37;
-      --deep-bg: #fff9f9;
-      --card-bg: #ffffff;
-    }
-
+    :root { --main-color: #f7a8b8; --gold: #d4af37; --deep-bg: #fff9f9; --card-bg: #ffffff; }
     body { background-color: var(--deep-bg); font-family: 'Noto Sans JP', sans-serif; color: #4a4242; padding: 20px 10px; }
-    h1, h2, h4, .serif { font-family: 'Noto Serif JP', serif; }
-
+    h4, .serif { font-family: 'Noto Serif JP', serif; }
     .container { max-width: 550px; margin: auto; }
-    
-    .card-form {
-      border-radius: 40px; border: none; background: var(--card-bg);
-      padding: 40px 30px; box-shadow: 0 15px 40px rgba(247,168,184,0.1);
-      margin-bottom: 30px;
-    }
-
-    .form-label { font-weight: 700; font-size: 0.85rem; color: var(--gold); margin-bottom: 8px; }
+    .card-form { border-radius: 40px; border: none; background: var(--card-bg); padding: 40px 30px; box-shadow: 0 15px 40px rgba(247,168,184,0.15); margin-bottom: 30px; }
+    .form-label { font-weight: 700; font-size: 0.8rem; color: var(--gold); margin-bottom: 8px; letter-spacing: 1px; }
     .form-select { border-radius: 12px; border: 1px solid #f0e6e6; padding: 12px; margin-bottom: 20px; font-size: 0.95rem; }
-
-    .btn-diagnosis {
-      background: linear-gradient(135deg, #f7a8b8, #d4af37);
-      color: white; border: none; border-radius: 50px; font-weight: 700; padding: 18px; width: 100%;
-      letter-spacing: 2px; box-shadow: 0 10px 25px rgba(212,175,55,0.3); transition: 0.4s;
-    }
+    .btn-diagnosis { background: linear-gradient(135deg, #f7a8b8, #d4af37); color: white; border: none; border-radius: 50px; font-weight: 700; padding: 18px; width: 100%; letter-spacing: 2px; box-shadow: 0 10px 25px rgba(212,175,55,0.3); transition: 0.4s; }
     .btn-diagnosis:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(212,175,55,0.4); }
-
-    /* 結果表示エリア */
     .oracle-box { margin-top: 40px; }
     .analysis-card { background: #fff; border-radius: 30px; padding: 30px; margin-bottom: 30px; border-left: 8px solid var(--gold); line-height: 1.8; font-size: 0.9rem; }
-    
-    .premium-item-card {
-      background: #fff; border-radius: 40px; overflow: hidden;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.08); position: relative;
-    }
-    .item-badge {
-      position: absolute; top: 20px; right: 20px; background: var(--gold);
-      color: white; padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.75rem; z-index: 10;
-    }
+    .premium-item-card { background: #fff; border-radius: 40px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.08); position: relative; }
+    .item-badge { position: absolute; top: 20px; right: 20px; background: var(--gold); color: white; padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.75rem; z-index: 10; }
     .img-wrapper { width: 100%; height: 350px; display: flex; align-items: center; justify-content: center; background: #fafafa; padding: 20px; }
     .img-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
-    
     .item-info { padding: 40px 30px; }
-    .verdict-box {
-      font-style: italic; font-size: 1.05rem; line-height: 1.8; margin-bottom: 25px;
-      color: #333; position: relative; padding-left: 20px; border-left: 3px solid var(--gold);
-    }
+    .verdict-box { font-style: italic; font-size: 1.05rem; line-height: 1.8; margin-bottom: 25px; color: #333; position: relative; padding-left: 20px; border-left: 3px solid var(--gold); }
     .price-tag { color: var(--gold); font-size: 1.6rem; font-weight: 700; font-family: 'Noto Serif JP', serif; }
-
-    .btn-buy {
-      background: #333; color: white; border-radius: 50px; padding: 15px 40px;
-      text-decoration: none; font-weight: 700; transition: 0.3s; display: inline-block;
-    }
-    .btn-buy:hover { background: var(--gold); color: white; }
-
+    .btn-buy { background: #333; color: white; border-radius: 50px; padding: 15px 40px; text-decoration: none; font-weight: 700; transition: 0.3s; display: inline-block; }
     #loading { display: none; text-align: center; padding: 50px; }
-    .spinner-border { width: 3rem; height: 3rem; color: var(--gold); }
     .disclaimer { font-size: 0.7rem; color: #bbb; text-align: center; margin-top: 50px; }
   </style>
 </head>
@@ -84,7 +45,7 @@
 
     <div class="card-form shadow-sm animate__animated animate__fadeInUp">
       <form id="oracleForm">
-        <label class="form-label">Q. 贈り相手は？</label>
+        <label class="form-label">贈り相手は？</label>
         <select class="form-select" id="target">
           <option value="me" selected>自分自身へのご褒美</option>
           <option value="friend">大切な友人へのギフト</option>
@@ -93,26 +54,42 @@
 
         <div class="row">
           <div class="col-6">
-            <label class="form-label">Q. 相手の性別</label>
+            <label class="form-label">相手の性別</label>
             <select class="form-select" id="gender">
               <option value="女性" selected>女性</option>
               <option value="男性">男性</option>
             </select>
           </div>
           <div class="col-6">
-            <label class="form-label">Q. 相手の年代</label>
+            <label class="form-label">相手の年代</label>
             <select class="form-select" id="age">
               <option value="20代">20代</option><option value="30代">30代</option><option value="40代" selected>40代</option><option value="50代">50代</option>
             </select>
           </div>
         </div>
 
-        <label class="form-label">Q. 相手の性格（MBTI）</label>
+        <label class="form-label">ライフスタイル</label>
+        <select class="form-select" id="lifestyle">
+          <option value="独身（自分の時間を大切にしている）">独身（自分の時間を大切にしている）</option>
+          <option value="既婚（パートナーと二人暮らし）">既婚（パートナーと二人暮らし）</option>
+          <option value="既婚・子育て中（子供中心の生活）">既婚・子育て中（子供中心の生活）</option>
+          <option value="その他">その他</option>
+        </select>
+
+        <label class="form-label">性格タイプ（MBTI）</label>
         <select class="form-select" id="mbti">
-          <optgroup label="分析家"><option value="INTJ">INTJ</option><option value="INTP">INTP</option><option value="ENTJ">ENTJ</option><option value="ENTP">ENTP</option></optgroup>
-          <optgroup label="外交官"><option value="INFJ">INFJ</option><option value="INFP">INFP</option><option value="ENFJ">ENFJ</option><option value="ENFP">ENFP</option></optgroup>
-          <optgroup label="番人"><option value="ISTJ">ISTJ</option><option value="ISFJ">ISFJ</option><option value="ESTJ">ESTJ</option><option value="ESFJ">ESFJ</option></optgroup>
-          <optgroup label="探検家"><option value="ISTP">ISTP</option><option value="ISFP">ISFP</option><option value="ESTP">ESTP</option><option value="ESFP">ESFP</option></optgroup>
+          <optgroup label="分析家">
+            <option value="INTJ">INTJ（建築家）</option><option value="INTP">INTP（論理学者）</option><option value="ENTJ">ENTJ（指揮官）</option><option value="ENTP">ENTP（討論者）</option>
+          </optgroup>
+          <optgroup label="外交官">
+            <option value="INFJ">INFJ（提唱者）</option><option value="INFP">INFP（仲介者）</option><option value="ENFJ">ENFJ（主人公）</option><option value="ENFP">ENFP（運動家）</option>
+          </optgroup>
+          <optgroup label="番人">
+            <option value="ISTJ">ISTJ（管理者）</option><option value="ISFJ">ISFJ（擁護者）</option><option value="ESTJ">ESTJ（幹部）</option><option value="ESFJ">ESFJ（領事）</option>
+          </optgroup>
+          <optgroup label="探検家">
+            <option value="ISTP">ISTP（巨匠）</option><option value="ISFP">ISFP（冒険家）</option><option value="ESTP">ESTP（起業家）</option><option value="ESFP">ESFP（エンターテイナー）</option>
+          </optgroup>
         </select>
 
         <button type="button" class="btn-diagnosis" onclick="submitOracle()">一品を厳選する</button>
@@ -125,10 +102,7 @@
     </div>
 
     <div id="results"></div>
-
-    <div class="disclaimer">
-      ※本サービスは楽天アフィリエイトプログラムに参加しており、紹介商品から収益を得る場合があります。
-    </div>
+    <div class="disclaimer">※本サービスは楽天アフィリエイトプログラムに参加しており、紹介商品から収益を得る場合があります。</div>
   </div>
 
   <script>
@@ -144,7 +118,8 @@
         target: document.getElementById('target').value,
         gender: document.getElementById('gender').value,
         age: document.getElementById('age').value,
-        mbti: document.getElementById('mbti').value
+        mbti: document.getElementById('mbti').value,
+        lifestyle: document.getElementById('lifestyle').value
       };
 
       try {
@@ -180,11 +155,7 @@
             </div>
             <div class="item-info">
               <h5 class="serif fw-bold mb-4">${data.item.name}</h5>
-              
-              <div class="verdict-box serif">
-                "${data.verdict}"
-              </div>
-
+              <div class="verdict-box serif">"${data.verdict}"</div>
               <div class="d-flex justify-content-between align-items-center mt-5">
                 <div class="price-box">
                   <div class="price-tag">${data.item.price}</div>
