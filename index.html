@@ -58,6 +58,7 @@
 
     .ai-badge { background: #ffb7c5; color: white; font-size: 0.65rem; padding: 4px 14px; border-radius: 20px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
     .tag-shipping { background:#fff0f3; color:#f06595; border:1px solid #f06595; font-size:0.6rem; padding:2px 6px; border-radius:4px; margin-right:5px; font-weight:bold; }
+    .tag-deal { background:#fff9db; color:#d9480f; border:1px solid #d9480f; font-size:0.6rem; padding:2px 6px; border-radius:4px; margin-right:5px; font-weight:bold; }
     .tag-rating { color:#d4a373; font-size:0.75rem; font-weight:bold; }
 
     .price-tag { color: var(--main-color); font-weight: bold; font-size: 1.1rem; }
@@ -104,7 +105,6 @@
   </div>
 
   <script>
-    // GASのURL
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxDaf3ladih274DwfUcgqQX-0-P-w0W_1zmREAicx-ILpyFqawerpEEgWdnTIH9Ghza/exec";
 
     async function submitForm() {
@@ -139,19 +139,18 @@
         return;
       }
 
-      // 1. コンシェルジュメッセージ
       if (data.analysis) html += `<div class="analysis-box"><strong>Concierge Message</strong><br>${data.analysis}</div>`;
       
-      // 2. カテゴリー別商品表示（堅牢なループ処理に修正）
-      const categoryItems = data.items || {};
-      Object.keys(categoryItems).forEach(catName => {
-        const productList = categoryItems[catName];
+      const itemsMap = data.items || {};
+      Object.keys(itemsMap).forEach(catName => {
+        const productList = itemsMap[catName];
         if (!Array.isArray(productList)) return;
 
         html += `<h6 class="text-center my-4 fw-bold" style="color:#8d7e7e">- ${catName} -</h6>`;
         productList.forEach(item => {
           let badges = '';
           if (item.isFreeShipping) badges += `<span class="tag-shipping">送料無料</span>`;
+          if (item.isSuperDeal) badges += `<span class="tag-deal">DEAL対象</span>`;
           if (item.reviewAverage) badges += `<span class="tag-rating">⭐ ${item.reviewAverage}</span>`;
 
           html += `
@@ -170,9 +169,12 @@
         });
       });
 
-      // 3. 👑 究極の一品
       if (data.ultimateItem) {
         const u = data.ultimateItem;
+        let uBadges = '';
+        if (u.isFreeShipping) uBadges += `<span class="tag-shipping" style="background:var(--gold); border-color:var(--gold); color:white;">送料無料</span>`;
+        if (u.isSuperDeal) uBadges += `<span class="tag-deal">DEAL対象</span>`;
+
         html += `
           <div class="ultimate-section mt-5 p-4 text-center">
             <h5 class="fw-bold mb-3" style="color:var(--gold)">👑 究極の選択</h5>
@@ -180,14 +182,14 @@
               <div class="img-wrapper"><img src="${u.image}" class="product-img"></div>
               <div class="product-content text-start">
                 <div class="mb-2">
-                  <span class="tag-shipping" style="background:var(--gold); border-color:var(--gold); color:white;">送料無料</span>
+                  ${uBadges}
                   <span class="tag-rating" style="color:var(--gold)">⭐ ${u.reviewAverage}</span>
                 </div>
                 <p class="fst-italic small mb-3" style="color:#666">"${u.ultimateReason}"</p>
                 <h6 class="fw-bold mb-3">${u.name}</h6>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="price-tag">${u.price}</span>
-                  <a href="${u.url}" target="_blank" class="btn-detail" style="background:var(--gold)">今すぐ手に入れる</a>
+                  <a href="${u.url}" target="_blank" class="btn btn-detail" style="background:var(--gold)">今すぐ手に入れる</a>
                 </div>
               </div>
             </div>
