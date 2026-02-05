@@ -41,12 +41,12 @@
   <div class="container">
     <div class="text-center mb-5 animate__animated animate__fadeIn">
       <h4 class="serif fw-bold mb-2" style="letter-spacing: 3px;">ご褒美コンシェルジュ</h4>
-      <p class="small text-muted">本質を見抜く、運命の一品を。</p>
+      <p class="small text-muted">本質を突き詰めた、運命の一品。</p>
     </div>
 
     <div class="card-form shadow-sm animate__animated animate__fadeInUp">
       <form id="oracleForm">
-        <label class="form-label">Q. 贈り相手は？</label>
+        <label class="form-label">贈り相手は？</label>
         <select class="form-select" id="target">
           <option value="me" selected>自分自身へのご褒美</option>
           <option value="friend">大切な友人へのギフト</option>
@@ -71,9 +71,9 @@
 
         <label class="form-label">現在のライフスタイル</label>
         <select class="form-select" id="lifestyle">
-          <option value="独身（自由な時間が多い）">独身（自由な時間が多い）</option>
-          <option value="既婚二人暮らし（静かな生活）">既婚（パートナーと二人暮らし）</option>
-          <option value="既婚・子育て中（多忙な日々）">既婚・子育て中（多忙な日々）</option>
+          <option value="独身">独身（自由な時間が多い）</option>
+          <option value="既婚二人暮らし">既婚（パートナーと二人暮らし）</option>
+          <option value="既婚・子育て中">既婚・子育て中（子供中心の生活）</option>
           <option value="その他">その他</option>
         </select>
 
@@ -93,7 +93,7 @@
           </optgroup>
         </select>
 
-        <button type="button" class="btn-diagnosis" onclick="submitOracle()">一品を厳選する</button>
+        <button type="button" class="btn-diagnosis" onclick="submitOracle()">運命の品を呼び出す</button>
       </form>
     </div>
 
@@ -119,14 +119,14 @@
         const response = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
         const data = await response.json();
         showOracleResult(data);
-      } catch (e) { alert("エラーが発生しました。"); loading.style.display = 'none'; }
+      } catch (e) { alert("システムエラーが発生しました。"); loading.style.display = 'none'; }
     }
 
     function showOracleResult(data) {
       document.getElementById('loading').style.display = 'none';
       const resDiv = document.getElementById('results');
       if (data.error && !data.item) {
-        resDiv.innerHTML = `<div class="oracle-box animate__animated animate__fadeInUp"><div class="analysis-card shadow-sm text-center"><h6 class="fw-bold mb-3">コンシェルジュより</h6><p>${data.analysis || ""}</p><div class="alert alert-warning small">${data.error}</div></div></div>`;
+        resDiv.innerHTML = `<div class="oracle-box animate__animated animate__fadeInUp"><div class="analysis-card shadow-sm text-center"><h6>コンシェルジュより</h6><p>${data.analysis || ""}</p><div class="alert alert-warning small">${data.error}</div></div></div>`;
         return;
       }
       resDiv.innerHTML = `
