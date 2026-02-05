@@ -41,7 +41,7 @@
   <div class="container">
     <div class="text-center mb-5 animate__animated animate__fadeIn">
       <h4 class="serif fw-bold mb-2" style="letter-spacing: 3px;">ご褒美コンシェルジュ</h4>
-      <p class="small text-muted">今のあなたに、運命の一品を。</p>
+      <p class="small text-muted">本質を見抜く、運命の一品を。</p>
     </div>
 
     <div class="card-form shadow-sm animate__animated animate__fadeInUp">
@@ -55,29 +55,29 @@
 
         <div class="row">
           <div class="col-6">
-            <label class="form-label">Q. 相手の性別</label>
+            <label class="form-label">相手の性別</label>
             <select class="form-select" id="gender">
               <option value="女性" selected>女性</option>
               <option value="男性">男性</option>
             </select>
           </div>
           <div class="col-6">
-            <label class="form-label">Q. 相手の年代</label>
+            <label class="form-label">相手の年代</label>
             <select class="form-select" id="age">
               <option value="20代">20代</option><option value="30代">30代</option><option value="40代" selected>40代</option><option value="50代">50代</option>
             </select>
           </div>
         </div>
 
-        <label class="form-label">Q. 現在のライフスタイル</label>
+        <label class="form-label">現在のライフスタイル</label>
         <select class="form-select" id="lifestyle">
-          <option value="独身（自分の時間を大切にしている）">独身（自分の時間を大切にしている）</option>
-          <option value="既婚（パートナーと二人暮らし）">既婚（パートナーと二人暮らし）</option>
-          <option value="既婚・子育て中（子供中心の生活）">既婚・子育て中（子供中心の生活）</option>
+          <option value="独身（自由な時間が多い）">独身（自由な時間が多い）</option>
+          <option value="既婚二人暮らし（静かな生活）">既婚（パートナーと二人暮らし）</option>
+          <option value="既婚・子育て中（多忙な日々）">既婚・子育て中（多忙な日々）</option>
           <option value="その他">その他</option>
         </select>
 
-        <label class="form-label">Q. 性格タイプ（MBTI）</label>
+        <label class="form-label">性格タイプ（MBTI）</label>
         <select class="form-select" id="mbti">
           <optgroup label="分析家">
             <option value="INTJ">INTJ（建築家）</option><option value="INTP">INTP（論理学者）</option><option value="ENTJ">ENTJ（指揮官）</option><option value="ENTP">ENTP（討論者）</option>
@@ -103,10 +103,7 @@
     </div>
 
     <div id="results"></div>
-
-    <div class="disclaimer">
-      ※本サービスは楽天アフィリエイトプログラムに参加しており、紹介商品から収益を得る場合があります。
-    </div>
+    <div class="disclaimer">※本サービスは楽天アフィリエイトプログラムに参加しており、紹介商品から収益を得る場合があります。</div>
   </div>
 
   <script>
@@ -117,70 +114,43 @@
       const results = document.getElementById('results');
       loading.style.display = 'block';
       results.innerHTML = '';
-      
-      const payload = {
-        target: document.getElementById('target').value,
-        gender: document.getElementById('gender').value,
-        age: document.getElementById('age').value,
-        mbti: document.getElementById('mbti').value,
-        lifestyle: document.getElementById('lifestyle').value
-      };
-
+      const payload = { target: document.getElementById('target').value, gender: document.getElementById('gender').value, age: document.getElementById('age').value, mbti: document.getElementById('mbti').value, lifestyle: document.getElementById('lifestyle').value };
       try {
         const response = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
         const data = await response.json();
         showOracleResult(data);
-      } catch (e) {
-        alert("通信エラーが発生しました。");
-        loading.style.display = 'none';
-      }
+      } catch (e) { alert("エラーが発生しました。"); loading.style.display = 'none'; }
     }
 
     function showOracleResult(data) {
       document.getElementById('loading').style.display = 'none';
       const resDiv = document.getElementById('results');
-      
-      if (data.error) {
-        resDiv.innerHTML = `<div class="alert alert-warning text-center p-4 animate__animated animate__fadeIn">${data.error}</div>`;
+      if (data.error && !data.item) {
+        resDiv.innerHTML = `<div class="oracle-box animate__animated animate__fadeInUp"><div class="analysis-card shadow-sm text-center"><h6 class="fw-bold mb-3">コンシェルジュより</h6><p>${data.analysis || ""}</p><div class="alert alert-warning small">${data.error}</div></div></div>`;
         return;
       }
-
-      // 空白回避のための安全なデータ取得
-      const analysisText = data.analysis || "心理鑑定の結果を読み取ることができませんでした。";
-      const verdictText = data.verdict || "選定理由を読み取ることができませんでした。";
-      const item = data.item || { name: "該当商品なし", price: "-", image: "", url: "#" };
-
       resDiv.innerHTML = `
         <div class="oracle-box animate__animated animate__fadeInUp">
           <div class="analysis-card shadow-sm">
             <h6 class="fw-bold mb-3"><i class="fas fa-fingerprint me-2"></i>深層心理の鑑定結果</h6>
-            <p>${analysisText}</p>
+            <p>${data.analysis}</p>
           </div>
-
           <div class="premium-item-card shadow-lg">
             <div class="item-badge">THE BEST CHOICE</div>
-            <div class="img-wrapper">
-              <img src="${item.image}">
-            </div>
+            <div class="img-wrapper"><img src="${data.item.image}"></div>
             <div class="item-info">
-              <h5 class="serif fw-bold mb-4">${item.name}</h5>
-              <div class="verdict-box serif">"${verdictText}"</div>
+              <h5 class="serif fw-bold mb-4">${data.item.name}</h5>
+              <div class="verdict-box serif">"${data.verdict}"</div>
               <div class="d-flex justify-content-between align-items-center mt-5">
                 <div class="price-box">
-                  <div class="price-tag">${item.price}</div>
-                  <div class="small text-muted">⭐ ${item.reviewAverage || '4.5'}</div>
+                  <div class="price-tag">${data.item.price}</div>
+                  <div class="small text-muted">⭐ ${data.item.reviewAverage}</div>
                 </div>
-                <a href="${item.url}" target="_blank" class="btn-buy">詳細を見る</a>
+                <a href="${data.item.url}" target="_blank" class="btn-buy">詳細を見る</a>
               </div>
             </div>
           </div>
-          
-          <div class="text-center mt-5 mb-5">
-            <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="btn btn-link text-muted small">別の条件で診断する</button>
-          </div>
-        </div>
-      `;
-      
+        </div>`;
       window.scrollTo({ top: document.getElementById('oracleForm').offsetHeight + 50, behavior: 'smooth' });
     }
   </script>
