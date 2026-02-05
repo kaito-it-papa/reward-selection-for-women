@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ご褒美コンシェルジュ | 運命の一品</title>
   
+  <link rel="icon" href="favicon.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -45,7 +46,7 @@
 
     <div class="card-form shadow-sm animate__animated animate__fadeInUp">
       <form id="oracleForm">
-        <label class="form-label">贈り相手は？</label>
+        <label class="form-label">Q. 贈り相手は？</label>
         <select class="form-select" id="target">
           <option value="me" selected>自分自身へのご褒美</option>
           <option value="friend">大切な友人へのギフト</option>
@@ -54,21 +55,21 @@
 
         <div class="row">
           <div class="col-6">
-            <label class="form-label">相手の性別</label>
+            <label class="form-label">Q. 相手の性別</label>
             <select class="form-select" id="gender">
               <option value="女性" selected>女性</option>
               <option value="男性">男性</option>
             </select>
           </div>
           <div class="col-6">
-            <label class="form-label">相手の年代</label>
+            <label class="form-label">Q. 相手の年代</label>
             <select class="form-select" id="age">
               <option value="20代">20代</option><option value="30代">30代</option><option value="40代" selected>40代</option><option value="50代">50代</option>
             </select>
           </div>
         </div>
 
-        <label class="form-label">ライフスタイル</label>
+        <label class="form-label">Q. 現在のライフスタイル</label>
         <select class="form-select" id="lifestyle">
           <option value="独身（自分の時間を大切にしている）">独身（自分の時間を大切にしている）</option>
           <option value="既婚（パートナーと二人暮らし）">既婚（パートナーと二人暮らし）</option>
@@ -76,7 +77,7 @@
           <option value="その他">その他</option>
         </select>
 
-        <label class="form-label">性格タイプ（MBTI）</label>
+        <label class="form-label">Q. 性格タイプ（MBTI）</label>
         <select class="form-select" id="mbti">
           <optgroup label="分析家">
             <option value="INTJ">INTJ（建築家）</option><option value="INTP">INTP（論理学者）</option><option value="ENTJ">ENTJ（指揮官）</option><option value="ENTP">ENTP（討論者）</option>
@@ -102,7 +103,10 @@
     </div>
 
     <div id="results"></div>
-    <div class="disclaimer">※本サービスは楽天アフィリエイトプログラムに参加しており、紹介商品から収益を得る場合があります。</div>
+
+    <div class="disclaimer">
+      ※本サービスは楽天アフィリエイトプログラムに参加しており、紹介商品から収益を得る場合があります。
+    </div>
   </div>
 
   <script>
@@ -132,19 +136,19 @@
       }
     }
 
-function showOracleResult(data) {
+    function showOracleResult(data) {
       document.getElementById('loading').style.display = 'none';
       const resDiv = document.getElementById('results');
       
       if (data.error) {
-        resDiv.innerHTML = `<div class="alert alert-warning text-center p-4">${data.error}</div>`;
+        resDiv.innerHTML = `<div class="alert alert-warning text-center p-4 animate__animated animate__fadeIn">${data.error}</div>`;
         return;
       }
 
-      // データの存在確認（空白回避）
+      // 空白回避のための安全なデータ取得
       const analysisText = data.analysis || "心理鑑定の結果を読み取ることができませんでした。";
       const verdictText = data.verdict || "選定理由を読み取ることができませんでした。";
-      const item = data.item || { name: "商品が見つかりませんでした", price: "-", image: "", url: "#" };
+      const item = data.item || { name: "該当商品なし", price: "-", image: "", url: "#" };
 
       resDiv.innerHTML = `
         <div class="oracle-box animate__animated animate__fadeInUp">
