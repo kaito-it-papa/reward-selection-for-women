@@ -61,13 +61,9 @@
     .tag-rating { color:#d4a373; font-size:0.75rem; font-weight:bold; }
 
     .price-tag { color: var(--main-color); font-weight: bold; font-size: 1.1rem; }
-    .btn-detail { background-color: var(--main-color); color: white; border-radius: 25px; padding: 8px 25px; text-decoration: none; font-size: 0.85rem; font-weight: bold; border: none; }
+    .btn-detail { background-color: var(--main-color); color: white; border-radius: 25px; padding: 8px 25px; text-decoration: none; font-size: 0.85rem; font-weight: bold; border: none; display: inline-block; }
 
-    /* 👑 究極の一品セクション */
-    .ultimate-section {
-      background: linear-gradient(135deg, #fffdf3, #fff5e6);
-      border: 2px solid var(--gold); border-radius: 30px;
-    }
+    .ultimate-section { background: linear-gradient(135deg, #fffdf3, #fff5e6); border: 2px solid var(--gold); border-radius: 30px; }
     .ultimate-card { border: 3px solid var(--gold) !important; box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2) !important; }
 
     #loading { display: none; text-align: center; padding: 30px; }
@@ -85,7 +81,7 @@
         <label class="small fw-bold mb-2">性別 & 年代</label>
         <div class="row g-2 mb-3">
           <div class="col-6"><select class="form-select" id="gender"><option value="女性" selected>女性</option><option value="男性">男性</option></select></div>
-          <div class="col-6"><select class="form-select" id="age"><option value="20代">20代</option><option value="30代">30代</option><option value="40代" selected>40代</option><option value="50代">50代</option></select></div>
+          <div class="col-6"><select class="form-select" id="age"><option value="20代">20代</option><option value="30代">30代</option><option value="40代" selected>40代</option><option value="50代">50代</option><option value="60代">60代</option></select></div>
         </div>
         <label class="small fw-bold mb-2">性格タイプ (MBTI)</label>
         <select class="form-select" id="mbti">
@@ -108,7 +104,7 @@
   </div>
 
   <script>
-    // あなたの最新GAS URL
+    // GASのURL
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxDaf3ladih274DwfUcgqQX-0-P-w0W_1zmREAicx-ILpyFqawerpEEgWdnTIH9Ghza/exec";
 
     async function submitForm() {
@@ -143,12 +139,17 @@
         return;
       }
 
+      // 1. コンシェルジュメッセージ
       if (data.analysis) html += `<div class="analysis-box"><strong>Concierge Message</strong><br>${data.analysis}</div>`;
       
-      const items = data.items || {};
-      for (let cat in items) {
-        html += `<h6 class="text-center my-4 fw-bold" style="color:#8d7e7e">- ${cat} -</h6>`;
-        items[cat].forEach(item => {
+      // 2. カテゴリー別商品表示（堅牢なループ処理に修正）
+      const categoryItems = data.items || {};
+      Object.keys(categoryItems).forEach(catName => {
+        const productList = categoryItems[catName];
+        if (!Array.isArray(productList)) return;
+
+        html += `<h6 class="text-center my-4 fw-bold" style="color:#8d7e7e">- ${catName} -</h6>`;
+        productList.forEach(item => {
           let badges = '';
           if (item.isFreeShipping) badges += `<span class="tag-shipping">送料無料</span>`;
           if (item.reviewAverage) badges += `<span class="tag-rating">⭐ ${item.reviewAverage}</span>`;
@@ -167,8 +168,9 @@
               </div>
             </div>`;
         });
-      }
+      });
 
+      // 3. 👑 究極の一品
       if (data.ultimateItem) {
         const u = data.ultimateItem;
         html += `
