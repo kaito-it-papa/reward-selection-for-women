@@ -17,6 +17,15 @@
     body { background-color: var(--deep-bg); font-family: 'Noto Sans JP', sans-serif; color: #4a4242; padding: 20px 10px; }
     h4, .serif { font-family: 'Noto Serif JP', serif; }
     .container { max-width: 550px; margin: auto; }
+    
+    /* PR表記 */
+    .pr-mark {
+        font-size: 0.6rem;
+        color: #999;
+        text-align: right;
+        margin-bottom: 5px;
+    }
+
     .card-form { border-radius: 40px; border: none; background: var(--card-bg); padding: 40px 30px; box-shadow: 0 15px 40px rgba(247,168,184,0.15); margin-bottom: 30px; }
     .form-label { font-weight: 700; font-size: 0.8rem; color: var(--gold); margin-bottom: 8px; letter-spacing: 1px; }
     .form-select { border-radius: 12px; border: 1px solid #f0e6e6; padding: 12px; margin-bottom: 20px; font-size: 0.95rem; }
@@ -33,12 +42,17 @@
     .price-tag { color: var(--gold); font-size: 1.6rem; font-weight: 700; font-family: 'Noto Serif JP', serif; }
     .btn-buy { background: #333; color: white; border-radius: 50px; padding: 15px 40px; text-decoration: none; font-weight: 700; transition: 0.3s; display: inline-block; }
     #loading { display: none; text-align: center; padding: 50px; }
-    .disclaimer { font-size: 0.7rem; color: #bbb; text-align: center; margin-top: 50px; }
+    
+    /* 規約対策フッター */
+    .app-footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; font-size: 0.7rem; color: #888; line-height: 1.6; }
+    .app-footer a { color: var(--gold); text-decoration: none; }
   </style>
 </head>
 <body>
 
   <div class="container">
+    <p class="pr-mark">※本サイトはプロモーションが含まれています</p>
+
     <div class="text-center mb-5 animate__animated animate__fadeIn">
       <h4 class="serif fw-bold mb-2" style="letter-spacing: 3px;">ご褒美コンシェルジュ</h4>
       <p class="small text-muted">本質を突き詰めた、運命の一品。</p>
@@ -103,7 +117,17 @@
     </div>
 
     <div id="results"></div>
-    <div class="disclaimer">※本サービスは楽天アフィリエイトプログラムに参加しており、紹介商品から収益を得る場合があります。</div>
+    
+    <footer class="app-footer">
+        <p>
+            ※当サイトの「鑑定結果」「おすすめ理由」等はAI（人工知能）によって生成されたものであり、内容の正確性を保証するものではありません。<br>
+            商品情報の詳細は、必ずリンク先の楽天市場の商品ページにてご確認ください。
+        </p>
+        <p class="mb-2">
+            <a href="https://webservice.rakuten.co.jp/" target="_blank">Supported by Rakuten Developers</a>
+        </p>
+        <p class="mb-0">&copy; ご褒美コンシェルジュ</p>
+    </footer>
   </div>
 
   <script>
